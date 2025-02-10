@@ -6,11 +6,11 @@
 * This returns 0 for execve call, but blocks all shared library access?
 ```
  char filename[16];
-    bpf_get_current_comm(&filename, sizeof(filename));
+ bpf_get_current_comm(&filename, sizeof(filename));
     
-    if (bpf_strncmp(filename, sizeof(filename), restricted)){
-        return 0;
-    }
+ if (bpf_strncmp(filename, sizeof(filename), restricted)){
+     return 0;
+ }
 ```
 
 ``` mermaid

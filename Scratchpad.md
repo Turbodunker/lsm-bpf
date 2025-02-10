@@ -3,7 +3,7 @@
 ## eBPF specific
 * https://docs.ebpf.io/
 * https://docs.kernel.org/bpf/
-
+* ("helperfunctions")[https://man7.org/linux/man-pages/man7/bpf-helpers.7.html]
 ### Utilities
 * https://github.com/libbpf/libbpf
 * https://github.com/bpftrace/bpftrace

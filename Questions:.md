@@ -11,6 +11,7 @@
  if (bpf_strncmp(filename, sizeof(filename), restricted)){
      return 0;
  }
+ return -EPERM;
 ```
 
 ``` mermaid

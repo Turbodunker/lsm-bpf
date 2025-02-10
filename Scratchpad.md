@@ -34,5 +34,5 @@ Debug binaries
 llvm-objdump -rd <binary>
 ```
 
-# nasty BPF helpers and macros
+# BPF helpers and macros
 * BPF_CORE_READ(ptr1, ptr2, ...) for pointer chasing

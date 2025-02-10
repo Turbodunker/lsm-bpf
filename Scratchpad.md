@@ -22,7 +22,7 @@ https://stackoverflow.com/questions/77534507/how-to-determine-lsm-hook-from-a-sy
 -g = only trace this function and functions it calls
 -F = only consider this executable
 
-trace-cmd record -p function_graph -g '*execve*' -F $HOME/test/helloworld # head /etc/mtab
+trace-cmd record -p function_graph -g '*execve*' -F $HOME/test/helloworld # OR /usr/bin/zoom
 trace-cmd report | cat | grep bpf_lsm
 ```
 

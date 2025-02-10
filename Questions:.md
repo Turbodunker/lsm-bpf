@@ -20,7 +20,7 @@
             LSM-Hooks
                 What hooks can we use?
                     Use function_graph to trace triggered hooks by syscall
-                        Are events subject to race-conditions?
+                        Are events/hook order subject to race-conditions?(probably)
             BPF Programs
                 What is license GPL and is required and why?
                 ("We can define structs(e.g. task_struct) and only their fields we will need to access?")

@@ -12,6 +12,7 @@
                         Are events subject to race-conditions?
             BPF Programs
                 What is license GPL and is required and why?
+                We can define structs and only their fields we will need to access?
             Examples
                 deny_unshare
                     id1["error: bpf_object__probe_loading():Operation not permitted(1). Couldnt load trivial BPF program. Check RLIMIT_MEMLOCK is set big enough value"]

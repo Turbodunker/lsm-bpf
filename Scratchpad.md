@@ -28,3 +28,8 @@ trace-cmd record -p function_graph -g '*execve*' -F $HOME/test/helloworld # OR /
 trace-cmd report | cat | grep bpf_lsm
 ```
 
+
+Debug binaries 
+```
+llvm-objdump -rd <binary>
+```

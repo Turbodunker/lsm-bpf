@@ -3,6 +3,7 @@
 
 * What are the complete set of LSM hooks that can be used with lsm-bpf(kernel 6.8)?
 
+
 ``` mermaid
     mindmap
         root((lsm-bpf))

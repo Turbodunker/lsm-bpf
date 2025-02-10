@@ -1,9 +1,10 @@
 # Useful links 
 
-## eBPF specific
+## eBPF specific and example programs
 * https://docs.ebpf.io/
 * https://docs.kernel.org/bpf/
 * [helperfunctions](https://man7.org/linux/man-pages/man7/bpf-helpers.7.html)
+* [libbpf-bootstrap](https://github.com/libbpf/libbpf-bootstrap/tree/master/examples/c)
 ### Utilities
 * https://github.com/libbpf/libbpf
 * https://github.com/bpftrace/bpftrace

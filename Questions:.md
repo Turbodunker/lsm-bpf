@@ -11,5 +11,5 @@
                     Use function_graph to trace triggered hooks by syscall
                         Are events subject to race-conditions?
             BPF Programs
-                What is license GPL and is required(and why)?
+                What is license GPL and is required and why?
 ```

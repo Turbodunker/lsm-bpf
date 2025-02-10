@@ -19,5 +19,9 @@
                     id1["error: bpf_object__probe_loading():Operation not permitted(1). Couldnt load trivial BPF program. Check RLIMIT_MEMLOCK is set big enough value"]
                         id2["update /etc/security/limits.conf: https://github.com/coreos/fedora-coreos-tracker/issues/1164"]
                         workaround["workaround: remove the CAP_SYS_ADMIN check"]
+                Zoom
+                    First iteration: get the i_ino value outside the script and hardcode it in. Deny all accesses to this inode to test
+                        Success... but not very useful
+                    Second iteration: get the i_ino value from the BPF program
 
 ```

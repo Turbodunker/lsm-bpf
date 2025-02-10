@@ -13,7 +13,7 @@
             BPF Programs
                 What is license GPL and is required and why?
                 ("We can define structs(e.g. task_struct) and only their fields we will need to access?")
-                    We HAVE to "re"-define structs we will be using, but only the fields we need to use. CO-RE handles the rest... i think
+                    We HAVE to redefine structs we will be using, but only the fields we need to use. CO-RE handles the rest... i think
             Examples
                 deny_unshare
                     id1["error: bpf_object__probe_loading():Operation not permitted(1). Couldnt load trivial BPF program. Check RLIMIT_MEMLOCK is set big enough value"]

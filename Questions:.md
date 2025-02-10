@@ -15,5 +15,6 @@
             Examples
                 deny_unshare
                     id1["error: bpf_object__probe_loading():Operation not permitted(1). Couldnt load trivial BPF program. Check RLIMIT_MEMLOCK is set big enough value"]
+                        id2[``` abc ```]
 
 ```

@@ -13,6 +13,8 @@
 ## Use-cases
 * https://blog.cloudflare.com/live-patch-security-vulnerabilities-with-ebpf-lsm/
 
+## Kernel stuff
+https://elixir.bootlin.com/linux/v6.8/source
 
 # Useful commands
 Tracing LSM Hooks by syscall:

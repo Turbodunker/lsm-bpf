@@ -12,3 +12,15 @@ https://github.com/lumontec/lsmtrace - Seems to only work for kernel <= 5.12
 
 ## Use-cases
 https://blog.cloudflare.com/live-patch-security-vulnerabilities-with-ebpf-lsm/
+
+
+# Useful commands
+Tracing LSM Hooks by syscall:
+https://stackoverflow.com/questions/77534507/how-to-determine-lsm-hook-from-a-syscall
+
+-p = the tracer used, 
+-g = only trace this function and functions it calls
+-F = only consider this executable
+
+trace-cmd record -p function_graph -g '*execve*' -F $HOME/test/helloworld # head /etc/mtab
+trace-cmd report | cat | grep bpf_lsm

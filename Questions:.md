@@ -3,6 +3,15 @@
 
 * What are the complete set of LSM hooks that can be used with lsm-bpf(kernel 6.8)?
 
+* This returns 0 for execve call, but blocks all shared library access?
+```
+ char filename[16];
+    bpf_get_current_comm(&filename, sizeof(filename));
+    
+    if (bpf_strncmp(filename, sizeof(filename), restricted)){
+        return 0;
+    }
+```
 
 ``` mermaid
     mindmap

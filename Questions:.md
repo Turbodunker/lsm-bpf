@@ -18,12 +18,13 @@
     mindmap
         root((lsm-bpf))
             LSM-Hooks
+                Use function_graph to trace triggered hooks by syscall
+                    Are events/hook order subject to race-conditions?
                 What hooks can we use?
                     inode_permission
                         Unless I can find a way to get the inode of the executable from the process, this can be circumvented by simply moving the executable.
                        
-                    Use function_graph to trace triggered hooks by syscall
-                        Are events/hook order subject to race-conditions?
+                    
             BPF Programs
                 What is license GPL and is required and why?
                 ("We can define structs(e.g. task_struct) and only their fields we will need to access?")

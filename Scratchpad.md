@@ -36,6 +36,11 @@ Debug binaries
 llvm-objdump -rd <binary>
 ```
 
+Find shared libraries linked to a binary
+```
+lld <binary>
+```
+
 # BPF helpers and macros
 * BPF_CORE_READ(ptr1, ptr2, ...) for pointer chasing
 * bpf_get_current_comm get filename into buffer... if it's 15bytes(last is NUL)

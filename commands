@@ -5,3 +5,8 @@
 # -F = only consider this executable
 trace-cmd record -p function_graph -g '*execve*' -F $HOME/test/helloworld # head /etc/mtab
 trace-cmd report | cat | grep bpf_lsm
+
+
+look at bpf_trace_printk
+by inode:
+find / -inum <inum> -print 2>/dev/null

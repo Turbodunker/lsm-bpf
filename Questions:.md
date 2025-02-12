@@ -20,7 +20,7 @@
             LSM-Hooks
                 What hooks can we use?
                     inode_permission
-                        Seems that more calls are made to this if we block a specific inode, instead of just printing the inode
+                       
                     Use function_graph to trace triggered hooks by syscall
                         Are events/hook order subject to race-conditions?
             BPF Programs

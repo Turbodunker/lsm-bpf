@@ -36,7 +36,7 @@ Debug binaries
 llvm-objdump -rd <binary>
 ```
 
-Find shared libraries linked to a binary
+Find all (dynamically linked) shared library dependencies for a binary
 ```
 lld <binary>
 ```

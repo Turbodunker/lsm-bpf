@@ -20,6 +20,7 @@
             LSM-Hooks
                 What hooks can we use?
                     inode_permission
+                        Unless I can find a way to get the inode of the executable from the process, this can be circumvented by simply moving the executable.
                        
                     Use function_graph to trace triggered hooks by syscall
                         Are events/hook order subject to race-conditions?

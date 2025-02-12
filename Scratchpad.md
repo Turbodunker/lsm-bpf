@@ -16,9 +16,9 @@
 * https://blog.cloudflare.com/live-patch-security-vulnerabilities-with-ebpf-lsm/
 
 ## Kernel stuff & hooks
-* https://elixir.bootlin.com/linux/v6.8/source
-* https://www.kernel.org/doc/html/v5.1/security/LSM.html
-
+* https://elixir.bootlin.com/linux/v6.8/source lookup of my kernel version
+* https://www.kernel.org/doc/html/v5.1/security/LSM.html hook definitions with explainer text
+* https://litux.nl/mirror/kerneldevelopment/0672327201/toc.html struct definitions
 # Useful commands
 Tracing LSM Hooks by syscall:
 https://stackoverflow.com/questions/77534507/how-to-determine-lsm-hook-from-a-syscall

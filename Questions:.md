@@ -22,7 +22,7 @@
                     inode_permission
                         Seems that more calls are made to this if we block a specific inode, instead of just printing the inode
                     Use function_graph to trace triggered hooks by syscall
-                        Are events/hook order subject to race-conditions?(probably)
+                        Are events/hook order subject to race-conditions?
             BPF Programs
                 What is license GPL and is required and why?
                 ("We can define structs(e.g. task_struct) and only their fields we will need to access?")

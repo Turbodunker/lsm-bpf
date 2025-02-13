@@ -30,7 +30,7 @@
                 ("We can define structs(e.g. task_struct) and only their fields we will need to access?")
                     We HAVE to redefine structs we will be using, but only the fields we need to use. CO-RE handles the rest... i think
             Building blocks
-                Purpose/goal, requirements/pre-requisites and evaluation criteria
+                Purpose/goal, syscall and hook, requirements/pre-requisites and evaluation criteria
             Examples
                 deny_unshare
                     id1["error: bpf_object__probe_loading():Operation not permitted(1). Couldnt load trivial BPF program. Check RLIMIT_MEMLOCK is set big enough value"]

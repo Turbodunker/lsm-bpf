@@ -10,7 +10,7 @@
 * https://github.com/libbpf/libbpf
 * https://github.com/bpftrace/bpftrace
 * https://github.com/iovisor/bcc/tree/master/libbpf-tools
-* https://github.com/lumontec/lsmtrace - Seems to only work for kernel <= 5.12
+* https://github.com/lumontec/lsmtrace - Seems to only work for kernel <= 5.12... but I could probably fix it... but it's not needed atm.
 
 ## Use-cases
 * https://blog.cloudflare.com/live-patch-security-vulnerabilities-with-ebpf-lsm/
@@ -45,3 +45,4 @@ lld <binary>
 # BPF helpers and macros
 * BPF_CORE_READ(ptr1, ptr2, ...) for pointer chasing
 * bpf_get_current_comm get filename into buffer... if it's 15bytes(last is NUL)
+* bpf_path_d_path should use this, but my kernel is outdated... should maybe upgrade

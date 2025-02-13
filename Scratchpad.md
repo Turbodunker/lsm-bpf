@@ -6,6 +6,7 @@
 * [helperfunctions](https://man7.org/linux/man-pages/man7/bpf-helpers.7.html)
 * [libbpf-bootstrap](https://github.com/libbpf/libbpf-bootstrap/tree/master/examples/c)
 * [libbpf-tools examples](https://github.com/iovisor/bcc/tree/master/libbpf-tools)
+* [Tetragon](https://github.com/cilium/tetragon/blob/bdebfece967a3ff4dbd3693b4d7caaee0e2f1a1a/bpf/lib/bpf_task.h)
 ### Utilities
 * https://github.com/libbpf/libbpf
 * https://github.com/bpftrace/bpftrace

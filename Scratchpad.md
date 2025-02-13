@@ -46,3 +46,4 @@ lld <binary>
 * BPF_CORE_READ(ptr1, ptr2, ...) for pointer chasing
 * bpf_get_current_comm get filename into buffer... if it's 15bytes(last is NUL)
 * bpf_path_d_path should use this, but my kernel is outdated... should maybe upgrade
+* echo 1 > /sys/kernel/debug/tracing/tracing_on   restart tracing 

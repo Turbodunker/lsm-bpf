@@ -7,7 +7,7 @@
 
 ## Block read-operations for directory and all files in that directory.
 * System Call: execve. Why? earliest syscall I can trace
-* Input/Hook: Inode permission: An inode struct 
+* Input/Hook: 1. a 2. b
 * Objective: Block all read(and only read!) accesses to this directory and it's files. All sub-directories of the target directory should not be affected. 
 * Pre-requisites: Inode number of the directory in question.
 * Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? 

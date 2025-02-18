@@ -12,5 +12,5 @@
     2. file_permission: Called right before read or write operation is performed. Gives file object and it's permission mask
 * Objective: Block all read(and only read!) accesses to this directory and it's files. All sub-directories of the target directory should not be affected. 
 * Pre-requisites: Inode number of the directory in question.
-* Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? 
+* Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? Does it work for mounted directories? Can you bypass with alias?
 * 

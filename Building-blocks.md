@@ -6,12 +6,12 @@
 * Evaluation criteria: A collection of tests to evaluate the implementation of the building block
 
 ## Block read-operations for directory and all files in that directory.
-* System Call: execve. Why? earliest syscall I can trace
+* System Call or Kernel function: file_permission - why? only called
 * Input/Hook: 
     1. inode_permission: Called right before file is opened. Gives inode and permission mask 
     2. file_permission: Called right before read or write operation is performed. Gives file object and it's permission mask
 * Objective: Block all read(and only read!) accesses to this directory and it's files. All sub-directories of the target directory should not be affected. 
 * Pre-requisites: Inode number of the directory in question.
-* Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? Does it work for mounted directories? Can you bypass with alias?
+* Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? Does it work for mounted directories? Can you bypass with alias? Concrete examples where the same file can have multiple names are hard links, bind mounts, and chroot.
 * Test structure: $HOME/secret/subsecret/subsubsecret
 * Sicne 

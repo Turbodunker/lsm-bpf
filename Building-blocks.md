@@ -11,9 +11,9 @@
 * Input/Hook: 
     1. inode_permission: Called right before file is opened. Gives inode and permission mask 
     2. file_permission: Called right before read or write operation is performed. Gives file object and it's permission mask
+    3. inode_create: Called when a new inode is created, regardless of what kind of file it is
 * Objective: Block all read(and only read!) accesses to this directory and it's files. All sub-directories of the target directory should not be affected. 
 * Pre-requisites: Inode number of the directory in question. In particular two maps: One for the directories to block(a list of inode numbers given as user input), and another for the content of the directories(currently hardcoded, but should be done in userspace). 
-* Limitations/Side-effects: Should make the directories undeletable, as if all references dissapears from a BPF map, the map will self-delete
+* Limitations/Side-effects: ???
 * Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? Does it work for mounted directories? Can you bypass with alias? Concrete examples where the same file can have multiple names are hard links, bind mounts, and chroot.
 * Test structure: $HOME/secret/subsecret/subsubsecret
-* Sicne 

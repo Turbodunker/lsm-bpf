@@ -17,3 +17,33 @@
 * Limitations/Side-effects: ???
 * Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? Does it work for mounted directories? Can you bypass with alias? Concrete examples where the same file can have multiple names are hard links, bind mounts, and chroot.
 * Test structure: $HOME/secret/subsecret/subsubsecret
+```
+symlink -> {linkme.txt,helloworld,evilcat}  (both before and created after LSM-BPF programs loaded)
+hardlink -> {linkme.txt,helloworld,evilcat} (both before and created after LSM-BPF programs loaded)
+secret
+├── bin
+│   ├── bash
+│   └── ls
+├── evilcat
+├── evilcat.c
+├── flag.txt
+├── helloworld
+├── helloworld.c
+├── lib
+│   ├── libc.so.6
+│   ├── libpcre2-8.so.0
+│   ├── libselinux.so.1
+│   └── libtinfo.so.6
+├── lib64
+│   ├── ld-linux-x86-64.so.2
+│   ├── libc.so.6
+│   └── libtinfo.so.6
+├── linkme.txt
+├── newdir (created after LSM-BPF programs loaded)
+├── renamedfile.txt (created after LSM-BPF programs loaded)
+└── subsecret
+    ├── newfile.txt (created after LSM-BPF programs loaded)
+    ├── notsecret.txt
+    └── subsubsecret
+        └── public.txt
+``

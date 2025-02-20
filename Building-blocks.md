@@ -1,5 +1,5 @@
 # What does a building block consist of:
-* Either a system call or a kernel function. [Using syscalls can cause TOCTOU issues] (https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/)
+* Either a system call or a kernel function being triggerd. [Using syscalls can cause TOCTOU issues](https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/)
 * Input/Hook: What does this building block get as input? These inputs depend on the LMS Hook being used. 
 * Objective: What we want the building block to achieve. This must be a testable objective.
 * Pre-requisites(optional): Information needed before the building-block can be used

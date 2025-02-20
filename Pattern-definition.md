@@ -39,7 +39,7 @@ Any limitations or side effects one may introduce by using this pattern
 ### Evaluation criteria 
 - qualitative or quantitative, is it on a scale
 - Need a better description 
-- what are we evaluating? correctness, resource usage(network traffic, cpu cycles etc.) 
+- what are we evaluating? correctness, resource usage(network traffic, cpu cycles etc.) and modualization 
 A collection of tests to evaluate the implementation of the pattern
 1. Cat file in directory or ls content of directory or subdirectories - Tested and works
 2. Create new directory or file in secret and read from that - Tested and works

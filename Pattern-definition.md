@@ -22,7 +22,11 @@ A pattern consists of the following elements:
 * What hooks does this pattern use?
 * Example: file_permission+mmap_file hook 
 
-### Pre-requisites
+### Kernel objects
+
+### User objects
+
+### Pre-requisites - current definition should be looked at
 Information or Objects needed before the pattern can be used
 * Example: BPF Map populated with user-defined paths to files and pinned on /sys/fs/bpf/ 
 

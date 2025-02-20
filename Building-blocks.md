@@ -5,14 +5,14 @@ Comment: should we make it a guideline that the pattern description is specific 
 
 ### Objective
 * High-level description of what the objective of the pattern. This must testable by quantitative methods.
-* Example: Filter (and deny/drop requests) to all incoming write operations to socket x except those ip's in whitelist y.
+* Example: Block read-operations for one or more specified directories and all files in that directory. Opening and writing to files are ok. This should only work 1-level of the directory, ie. not recursively. 
 
 ### Trigger
-* Either a system call or an "event" triggering a kernel function to hook into.
-* Seems like [Using syscalls can cause TOCTOU issues](https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/)
-* Example: A process attempts to call syscall READ on file F, which triggers kernel function security_file_permission.
+* The system call triggering a kernel function to hook into. Note that we are not hooking into syscalls via tracepoints. This does not seem like a part of lsm and neither does it seem like a good idea for our purposes. See [Using syscalls can cause TOCTOU issues](https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/) 
+* Example: A process attempts to perform syscall read on file F, which triggers kernel function security_file_permission.
 
-### Hook
+
+### Hook point
 * What hooks does this pattern use?
 * Example: Following previous example: file_permission hook gets the file_struct for F aswell as it's permissions mask. 
 
@@ -24,17 +24,13 @@ Comment: should we make it a guideline that the pattern description is specific 
 
 ### Objective
 Block read-operations for one or more specified directories and all files in that directory. (Note that opening and writing to files are not mentioned)
-### System Call or Kernel function
-file_permission + mmap_file \
-The first hook is called for "various read/write operations", but NOT for open. This is ideal as we still need to be able to write to files(and therefore also need to open them, so file_open is not useful). The second is only there as the first does not check for memory mapped files. TODO: fix already mapped files case
+
+### Trigger
+kernel functions: file_permission + mmap_file \
+The first hook is called for "various read/write operations", but NOT for open. This is ideal as we still need to be able to write to files(and therefore also need to open them, so file_open is not useful). The second is only there as the first does not check for memory mapped files. TODO: fix already mapped files case, probably with mmap_addr or file_mprotect hooks. However we could also make this out of scope of the pattern...
 
 
 
-
-* Input/Hook: 
-    1. inode_permission: Called right before file is opened. Gives inode and permission mask 
-    2. file_permission: Called right before read or write operation is performed. Gives file object and it's permission mask
-    3. inode_create: Called when a new inode is created, regardless of what kind of file it is
 * Objective: Block all read(and only read!) accesses to this directory and it's files. All sub-directories of the target directory should not be affected. 
 * Pre-requisites: Inode number of the directory in question. In particular two maps: One for the directories to block(a list of inode numbers given as user input), and another for the content of the directories(currently hardcoded, but should be done in userspace). 
 * Limitations/Side-effects: ???

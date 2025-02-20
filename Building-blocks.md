@@ -9,33 +9,35 @@ Comment: should we make it a guideline that the pattern description is specific 
 
 ### Trigger
 * The system call triggering a kernel function to hook into. Note that we are not hooking into syscalls via tracepoints. This does not seem like a part of lsm and neither does it seem like a good idea for our purposes. See [Using syscalls can cause TOCTOU issues](https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/) 
-* Example: A process attempts to perform syscall read on file F, which triggers kernel function security_file_permission.
+* Example: A process attempts to perform syscall READ on (non-mmapped)file F, which triggers hook in kernel function security_file_permission.
 
-
-### Hook point
+### Hook points
 * What hooks does this pattern use?
-* Example: Following previous example: file_permission hook gets the file_struct for F aswell as it's permissions mask. 
+* Example: file_permission+mmap_file hook 
 
-* Pre-requisites(optional): Information needed before the pattern can be used
-* Limitations/Side-effects: Any limitations or side effects one may introduce by using this pattern
-* Evaluation criteria: A collection of tests to evaluate the implementation of the pattern
+### Pre-requisites(optional)
+Information or Objects needed before the pattern can be used
+* Example: BPF Map populated with user-defined paths to files and pinned on /sys/fs/bpf/ 
 
-# Example:
+### Limitations/Side-effects
+Any limitations or side effects one may introduce by using this pattern
+* Example: Pattern does not work for files already mmapped prior to LSM BPF program being loaded
+* Example: Pattern may cause new inodes to be blocked arbitrarily(TODO: update list when inodes are deleated) or eventually fs will run out.
+* Example: Map sizes are not dynamic and limited in size.
 
-### Objective
-Block read-operations for one or more specified directories and all files in that directory. (Note that opening and writing to files are not mentioned)
+### Evaluation criteria 
+A collection of tests to evaluate the implementation of the pattern
+1. Cat file in directory or ls content of directory or subdirectories - Tested and works
+2. Create new directory or file in secret and read from that - Tested and works
+3. Write and execute files - Tested and works. Doing echo "123" >> secret/flag.txt > password.txt from outside secret will still append 123 to the flag.txt, but only write 123 to password.txt. Neither evilcat or helloworld(inside secret/) can be executed.
+4. Symbolic + Hardlinks(previously existing and new ones) - Tested and works
+5. chroot - Tested with /bin/ls only, but works for that
+6. bind mounts - sudo mount --bind $HOME/secret $HOME/test we get the following:
+7. aliases - 
+8. special files - FIFO and pipes
+9. memory mapped files - see script
 
-### Trigger
-kernel functions: file_permission + mmap_file \
-The first hook is called for "various read/write operations", but NOT for open. This is ideal as we still need to be able to write to files(and therefore also need to open them, so file_open is not useful). The second is only there as the first does not check for memory mapped files. TODO: fix already mapped files case, probably with mmap_addr or file_mprotect hooks. However we could also make this out of scope of the pattern...
-
-
-
-* Objective: Block all read(and only read!) accesses to this directory and it's files. All sub-directories of the target directory should not be affected. 
-* Pre-requisites: Inode number of the directory in question. In particular two maps: One for the directories to block(a list of inode numbers given as user input), and another for the content of the directories(currently hardcoded, but should be done in userspace). 
-* Limitations/Side-effects: ???
-* Evaluation criteria: Are sym- and hardlinks blocked for reading? Can we still write to and execute files in the directory? Does it work for mounted directories? Can you bypass with alias? Concrete examples where the same file can have multiple names are hard links, bind mounts, and chroot.
-* Test structure: $HOME/secret/subsecret/subsubsecret
+* Test structure
 ```
 mmap.exe -> (binary that mmaps argv[1] and prints it every second)
 symlink -> {linkme.txt,helloworld,evilcat}  (both before and created after LSM-BPF programs loaded)

@@ -12,7 +12,7 @@ A pattern consists of the following elements:
 Note: merge 5+6 into design decisions
 ### Objective
 * High-level description of what the objective of the pattern. This must testable by quantitative methods.
-* Example: Block read-operations for one or more specified directories and all files in that directory. Opening and writing to files are ok. This should only work 1-level of the directory, ie. not recursively. 
+* Example: Block read-operations for one or more user-specified directories and all files in that directory. Opening and writing to files are ok. This should only work 1-level of the directory, ie. not recursively. (NOte: should this work for all userS?) 
 
 ### Trigger
 * The system call triggering a kernel function to hook into. Note that we are not hooking into syscalls via tracepoints. This does not seem like a part of lsm and neither does it seem like a good idea for our purposes. See [Using syscalls can cause TOCTOU issues](https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/) 

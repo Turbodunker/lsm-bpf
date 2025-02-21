@@ -1,14 +1,18 @@
 # What is a pattern and what does a pattern consist of?
 A pattern is a small generalized LSM BPF program with a specific objective. 
 Patterns can be combined to make new patterns altogether, but their main purpose is to serve as small and repeatable generalizations for implementing larger, more complex programs. It can be thought of as a "building block" or a helper function. A single pattern consists of the following elements. \ 
-Comment: should we make it a guideline that the pattern description is specific enough such that there is only one (meaningful) way of implementing it? Or is that going too far? \
+
 A pattern consists of the following elements:
 1. Objective
 2. Trigger
 3. Hook points
-4. Pre-requisites(optional)
-5. Limitations/Side-effects(semi-optional)
-6. Evaluation criteria
+4. User space data
+5. Kernel space data 
+6. Protocol
+7. Implementation 
+8. Design
+
+
 Note: merge 5+6 into design decisions. INclude code example
 ### Objective
 * High-level description of what the objective of the pattern. This must testable by quantitative methods.

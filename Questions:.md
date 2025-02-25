@@ -1,5 +1,12 @@
 # Questions:
+* Evaluation criteria 
+- qualitative or quantitative, is it on a scale
+- Need a better description 
+- what are we evaluating? correctness, resource usage(network traffic, cpu cycles etc.) and modualization 
+
 * Multiple CPU's at work for simple Hello World. The order of the hooks seems to be the same every run. But are there race-conditions between hooks?
+
+
 
 * What are the complete set of LSM hooks that can be used with lsm-bpf(kernel 6.8)?
 

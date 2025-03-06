@@ -1,5 +1,5 @@
 1. Objective
-Block read-operations for one or more user-specified directories and all files(regular, directory and special) in said directories. Opening and writing to files are ok. Assume the LSM BPF program(s) are loaded sometime after boot.
+Block read-operations for one or more user-specified directories and all files(regular, directory and special) in said directories(1-level down). Opening and writing to files are ok. Assume the LSM BPF program(s) are loaded sometime after boot.
 
     1. One or more (target) directories must be able to block read operations
     2. Only files(regular/directory/special) that are the immediate child nodes for target directories should be blocked from reading. 
@@ -14,7 +14,8 @@ Block read-operations for one or more user-specified directories and all files(r
 Blockdir-read
 
 3. Hook points
-For finding hooks to consider I've through the hooks on the [kernel documentation for my kernel version] (https://www.kernel.org/doc/html/v6.8/core-api/kernel-api.html)
+For finding hooks to consider I've through the hooks on the [kernel documentation for my kernel version] (https://www.kernel.org/doc/html/v6.8/core-api/kernel-api.html). I searched for keywords file, inode and read and also traced the hooks called with function_graph to narrow down the search.
+Furthermore this article [File Monitoring with eBPF and Tetragon (Part 1)] (https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/) was used to decide what hooks to pick
 
 - file-permission
     This hook-point was chosen because file-permission is called before accessing an open file. In particular right before "various" read/write operations, and since we want to block all read operations to a given directory, this was expected to catch a lot of cases. This comes with the trade-off of the hook being called on every file access.

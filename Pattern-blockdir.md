@@ -1,4 +1,4 @@
-1. Objective
+1. Objective \
 Block read-operations for one or more user-specified directories and all files(regular, directory and special) in said directories(1-level down). Opening and writing to files are ok. Assume the LSM BPF program(s) are loaded sometime after boot.
 
     1. One or more (target) directories must be able to block read operations
@@ -10,10 +10,10 @@ Block read-operations for one or more user-specified directories and all files(r
     7. Special files like FIFO(named pipe) should not be able to circumvent protections. Should still work if pipe is opened prior to pattern being loaded. Note again that writing is ok. 
     8. Memory mapping of protected files, after pattern is loaded, should not circumvent protections
 
-2. Name
+2. Name \
 Blockdir-read
 
-3. Hook points
+3. Hook points \
 For finding hooks to consider I've through the hooks on the [kernel documentation for my kernel version](https://www.kernel.org/doc/html/v6.8/core-api/kernel-api.html). I searched for keywords file, inode and read and also traced the hooks called with function_graph to narrow down the search.
 Furthermore this article [File Monitoring with eBPF and Tetragon (Part 1)](https://isovalent.com/blog/post/file-monitoring-with-ebpf-and-tetragon-part-1/) was used to decide what hooks to pick
 

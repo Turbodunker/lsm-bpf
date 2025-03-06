@@ -22,7 +22,7 @@ This should be interpreted as a challenge to be solved, ie. what the pattern aim
 In other words, it should be a policy description. The more specifics this contains the better as this will make the evaluation of correctness later much easier.
 In particular this must include a specification list, prioritzied or not, of concrete requirements for this pattern. This is to support correctness evaluation later.
 
-Ideally this is void of any ambiguities, but this is unlikely to be the case, especially for the first couple of objectives I'm going to come up with, as I can't reasonably predict all possible challenges that may arise when implementing the pattern. The idea of this section is to guide implementation with a concrete goal that can inform design decisions, without movin. 
+Ideally this is void of any ambiguities, but this is unlikely to be the case, especially for the first couple of objectives I'm going to come up with, as I can't reasonably predict all possible challenges that may arise when implementing the pattern. The idea of this section is to guide implementation with a concrete goal that can inform design decisions. 
 
 ### Name
 An identifier to make it easier to distinguish between patterns.

@@ -40,25 +40,25 @@ This section should include the core of the code for the user space application 
 This section should include the core of the code for the kernel space application for the pattern. 
 
 ### Protocol
-Description of how the above user and kernel space data is exchanged. 
+Description of how the above user and kernel space application communicate/how data is exchanged. 
 The level of detail should depend of the Objective of the pattern, e.g. if timing-restrictions are integral to the Objective, then the protocol should account for this in some way. 
 As a minimum a protocol should include a description of what data is being exchanged, and how it's processed.
 If it gets real complicated include a diagram in the report.
 
 ### Design decisions
-A discussion/argumentation for why the points 3-5 are good choices for archieving the Objective, as well as any limitations or side-effects these design decisions may incur. 
+A discussion/argumentation for why the points 3-5 are good choices for achieving the Objective, as well as any limitations or side-effects these design decisions may incur. 
 This section should also describe any objective-specific aspects not included in the above sections. 
 For example if the objective introduces a restriction, that the pattern only acts on 3 unamed syscalls(the 3 most used syscalls for a given workload etc.), then the selection method for these system calls must be described. 
 Similarly if the objective introduces other restrictions not covered in sections 3-5, then these must be discussed here aswell. 
 
 ### Evaluation
 The final section should describe how to determine how well the pattern achieves the objective. This gets it's own section for each pattern, as how patterns are evaluated may vary wildly depending on the objective. 
-Evaluation is split into 3 parts as a minimum: Correctness, Ressource usage and Modularity.
+Evaluation is split into 3 parts as a minimum: Correctness, Resource usage and Modularity.
 - Correctness is intended to measure how well the pattern complies with the specification list given in the Objective. It will be measured via Software testing, for which the specification list will be used to create unit-tests. This metric will be measured as a rate: (number of passed unit-tests/total number of unit-tests).  
 
-However it is understood this cannot be proved to catch all scenarios/bugs. Given the time-constraints and scope of this project, this is about as well as I can do, but ideally this could be done with Hoare-logic or some other formal-system for proving correctness and/or fuzzing in case the pattern involves user input.
+However it is understood this cannot catch all scenarios/bugs and is therefore not a proof of correctness. Given the time-constraints and scope of this project, this is about as well as I can do, but ideally this could be done with Hoare-logic or some other formal-system for proving correctness.
 
-- Ressource usage indicates how expenssive the pattern is to use. The pattern may be proven correct wrt. the specification, but it's not worth much if it hogs all the systems ressource to load. This metric includes overhead tests where specific metrics are measured; CPU cycles/usage, syscall latency etc. Overhead should be the goto metric if the patterns specifications does not make other metrics more relevant. For example if the pattern requires a significant amount of memory in maps, then the memory usage of the maps for various workloads should take priority.
+- Ressource usage indicates how expensive the pattern is to use. The pattern may be proven correct w.r.t. the specification, but it's not worth much if it hogs all the systems resources while loaded. This metric includes overhead tests where specific metrics are measured; CPU cycles/usage, syscall latency etc. Overhead should be the goto metric if the patterns specifications does not make other metrics more relevant. For example if the pattern requires a significant amount of memory in maps, then the memory usage of the maps for various workloads should take priority.
 Furthermore if some hooks are closely related, one could measure overhead of using various hooks, e.g. file_permission vs. inode_permission. 
 
 

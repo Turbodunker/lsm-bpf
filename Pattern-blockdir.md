@@ -1,15 +1,20 @@
 1. Objective
 Block read-operations for one or more user-specified directories and all files(regular, directory and special) in said directories. Opening and writing to files are ok. Assume the LSM BPF program(s) are loaded sometime after boot.
 
-    1. One or more directories must be able to block read operations
-    2. Only files(regular/directory/special) that are immediate child node for above directories should be blocked from reading. 
-    3. ...
+    1. One or more (target) directories must be able to block read operations
+    2. Only files(regular/directory/special) that are the immediate child nodes for target directories should be blocked from reading. 
+    3. Symbolic- and Hardlinks to protected files should not be readable during load.
+    4. Bind mounts of a target directory to anywhere else on the same filesystem should not make protected files readable
+    5. Using chroot to sandbox inside a target directory should not circumvent protections.
+    6. Aliases to protected files should not be able to circumvent protections.
+    7. Special files like FIFO(named pipe) should not be able to circumvent protections. Should still work if pipe is opened prior to pattern being loaded. Note again that writing is ok. 
+    8. Memory mapping of protected files, after pattern is loaded, should not circumvent protections
 
 2. Name
 Blockdir-read
 
 3. Hook points
-For finding hooks to consider I've through the hooks on the (kernel documentation for my kernel version) [https://www.kernel.org/doc/html/v6.8/core-api/kernel-api.html]
+For finding hooks to consider I've through the hooks on the [kernel documentation for my kernel version] (https://www.kernel.org/doc/html/v6.8/core-api/kernel-api.html)
 
 - file-permission
     This hook-point was chosen because file-permission is called before accessing an open file. In particular right before "various" read/write operations, and since we want to block all read operations to a given directory, this was expected to catch a lot of cases. This comes with the trade-off of the hook being called on every file access.
@@ -95,7 +100,7 @@ Other hooks that were considered:
         __uint(pinning, LIBBPF_PIN_BY_NAME);
     } protected_files SEC(".maps");
 
-    // Helper to check parent directory and protect new inode
+    // Helper to check parent directory and protect new inode. This is the essence of the pattern
     static inline int check_parent_and_protect(unsigned long parent_ino, unsigned long current_ino) {
         if (bpf_map_lookup_elem(&protected_directories, &parent_ino)) {
             bpf_map_update_elem(&protected_files, &current_ino, &current_ino, BPF_ANY);
@@ -146,42 +151,36 @@ Other hooks that were considered:
     This patterns protocol is initiated by the user space, right after the BPF programs are loaded. The user space part needs a list of absolute paths for the directories that should be blocked for reading. Then it will populate the both maps with inodes and never update them again. At any point the kernel space may add inodes to the protected_files map, in so far the inode of the files current directory is found in protected_directories map. US -> KS(updates here).
 
 6. Design
-This pattern needs two maps, as it uses inodes for both deciding if a file should be protected(ie. the directories inodes),
-and to decide if a file can be read from or not(ie. the files in the directories). 
-This was specifically needed for symbolic links, but it may affect other vectors, such as pipes or bind mounts.
-Consider if a new file "public.txt" is created in subdir/ in: 
-/protected/subdir/public.txt
-We should be able to read the content of public.txt, but if we only have a single map of inodes we cannot meaningfully distingush between protected/ and subdir/.
+   I decided to not filter on any specifc set of syscalls for this pattern. In part because the objective does not mention any specific syscalls, but rather read "operations" and there seems to be a meaningful difference here. Most importantly that not all read operations results in the read syscall, e.g. memory mapped files, but there could be more, and tracking down all syscalls made by the read operations required in the objective, to check if they made a read syscall, seemed needlesly complex compared to using file_permission on most file read-write operations. I would have to use at least one hook anyway, and I expected the syscall-apathetic approach to be faster in the end... will see.
 
-Funnily enough, if one of the files in the target directories is a non-empty directory, they cannot be removed. If they are empty, then they can be removed. 
+    I decided to use an inode-based approach over a path-based approach because the objectives requirements mentions it must work for hardlinks, bind mounts and chroot.
+    This would not be possible if I only check on a collection of paths, as the above 3 cases could have different paths for the same file. 
 
+    This pattern needs two maps, as it uses inodes for both deciding if a file should be protected(ie. the directories inodes), and to decide if a file can be read from or not(ie. the files in the directories). 
+    
+    Why use 2 maps?
+    Consider if a new file "public.txt" is created in subdir/ in: 
+    /protected/subdir/public.txt
+    We should be able to read the content of public.txt, but if we only have a single map of inodes we cannot meaningfully distingush between protected/ and subdir/.
+    The dentry struct only contains information about it's parent dentry(from which we can extract an inode number ino_t). 
+    
+    A major issue currently is that I can't remove inodes from the tracking map... not sure what to try anymore. This is an issue because if files are removed from a target directory, it's inode number may be reassigned to another file somewhere else on the filesystem. This file should not be blocked from reading and will could(probably will) cause severe side-effects the longer the program runs and the more files are moved out of the target directories. 
+    
+    One solution to this is to not allow either the target directory or their content to be deleted while the pattern is loaded. TODO: add to requirements? or can this be solved? should we spend more time on this?
 
+    If one of the files in the target directories is a non-empty directory, they cannot be removed. If they are empty, then they can be removed. 
+    A semi-side-effect is that using opendir, readdir closedir(library functions dirent.h, man 3 readdir) don't give a "permission denied" when running the program, but when I strace I get a permission denied at getdents64 syscall, which according to the man pages of readdir syscall(man 2 readdir) is the syscall that superseds readdir(the syscall). 
+    But using ls on a dir I get the error on the terminal. Is this cause by the fork from execve?
 
-Another weirdness is that using opendir, readdir closedir I don't get a permission denied when running the program, but when I strace I get a permission denied at getdents syscall, which according to the man pages of readdir is the syscall that superseds readdir. 
-But using ls on a dir I get the error on the terminal. Is this cause by the fork from execve?
+    Another side-effect is that the pattern does not allow for any executable to be run in the target directories.
+    
 
-Can't remove inodes from the tracking map... not sure what to try anymore
-Not sure if I should spend more time on this pattern, because it doesn't really do anything that DAC can't do. I think it would make more sense if the pattern restricted the way the user can read from the file.
-
+    Does this pattern do anything that DAC can't do already? I think it would make more sense if the pattern restricted the way the user can read from the file. Unless there is a usecase for reaffirming access permissions even if read-flag is not set for user/group etc.
+    
 
 7. Evaluation
-For evaluating correctness, one should use the following cases for checking if its possible to write, but not read, from any file(regular/directory/special) in any of the directories, from any user or group:
+Correctness - Create set of unit-tests from the requirement specification. Pending until confirmation this makes sense to do..
 
-- Can we perform read operations of files(regular/directory/special) already present in directory before BPF program loaded, and after program loaded? Is it possible to write to files?
-
-- Symbolic + Hardlinks to files inside the protected directories.
-
-- After calling chroot on the target directories.
-
-- Aliases should not affect behaviour.
-
-- After bind mount operation on one of the target directories.
-
-- Pipes already open before BPF programs loaded, and opened after the fact. 
-
-- Memory mapped files before and after BPF programs loaded.
-
-- Truncate calls should still work, as it only updates files metadata, without reading content.
+For evaluating ressource usage: Create a workload with a lot of file accesses and compare execution time overhead of file_permission vs inode_permission. Potentially file_open. Potentially include varitations on above with read syscall being checked instead of MAY_READ.
 
 
-For evaluating ressource 

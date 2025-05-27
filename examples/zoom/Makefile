@@ -1,5 +1,5 @@
-CLANG ?= clang-13
-LLVM_STRIP ?= llvm-strip-13
+CLANG ?= clang-19
+LLVM_STRIP ?= llvm-strip-19
 ARCH := x86
 INCLUDES := -I/usr/include -I/usr/include/x86_64-linux-gnu
 LIBS_DIR := -L/usr/lib/lib64 -L/usr/lib/x86_64-linux-gnu
@@ -10,7 +10,7 @@ LIBS := -lbpf -lelf
 all: zoom.skel.h zoom.bpf.o zoom
 
 run: all
-	sudo ./zoom
+	sudo ./zoom denylist.txt
 
 clean:
 	rm -f *.o
@@ -33,4 +33,7 @@ zoom: zoom.c zoom.skel.h
 	$(CC) -g -Wall -c $< -o $@.o
 	$(CC) -g -o $@ $(LIBS_DIR) $@.o $(LIBS)
 
+updater: updater.c 
+	$(CC) -g -Wall -c $< -o $@.o
+	$(CC) -g -o $@ $(LIBS_DIR) $@.o $(LIBS)
 .DELETE_ON_ERROR:
